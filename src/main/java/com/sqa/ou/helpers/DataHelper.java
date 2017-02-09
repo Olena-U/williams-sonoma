@@ -7,6 +7,9 @@
  */
 package com.sqa.ou.helpers;
 
+import java.sql.*;
+import java.util.*;
+
 /**
  * DataHelper //ADDD (description of class)
  * <p>
@@ -19,9 +22,7 @@ package com.sqa.ou.helpers;
  * @since 1.0
  */
 public class DataHelper {
-	// Constructor
 
-	// Static Method
 	public static String displayData(Object[][] data) {
 		StringBuilder sb = new StringBuilder();
 		// TODO Create two loops, one withing another to add all items to sb.
@@ -33,6 +34,44 @@ public class DataHelper {
 		}
 		// sb.append(data[0][0]);
 		return sb.toString();
+	}
+
+	public static Object[][] evalDatabaseTable(String driverClassString, String databaseStringUrl,
+			String username, String password, String tableName)
+			throws ClassNotFoundException, SQLException {
+		return evalDatabaseTable(driverClassString, databaseStringUrl, username, password,
+				tableName, 0, 0);
+	}
+
+	public static Object[][] evalDatabaseTable(String driverClassString, String databaseStringUrl,
+			String username, String password, String tableName, int rowOffset, int colOffset)
+			throws ClassNotFoundException, SQLException {
+		Object[][] myData;
+		ArrayList<Object> myArrayData = new ArrayList<Object>();
+		Class.forName(driverClassString);
+		Connection dbconn = DriverManager.getConnection(databaseStringUrl, username, password);
+		Statement stmt = dbconn.createStatement();
+		ResultSet rs = stmt.executeQuery("select * from " + tableName);
+		int numOfColumns = rs.getMetaData().getColumnCount();
+		int curRow = 1;
+		while (rs.next()) {
+			if (curRow > rowOffset) {
+				Object[] rowData = new Object[numOfColumns - colOffset];
+				for (int i = 0, j = colOffset; i < rowData.length; i++) {
+					rowData[i] = rs.getString(i + colOffset + 1);
+				}
+				myArrayData.add(rowData);
+			}
+			curRow++;
+		}
+		myData = new Object[myArrayData.size()][];
+		for (int i = 0; i < myData.length; i++) {
+			myData[i] = (Object[]) myArrayData.get(i);
+		}
+		rs.close();
+		stmt.close();
+		dbconn.close();
+		return myData;
 	}
 
 	// Instance Method (Will need a constructor that takes the Object[][])
