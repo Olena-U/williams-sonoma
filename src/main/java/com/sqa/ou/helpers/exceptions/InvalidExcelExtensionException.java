@@ -1,18 +1,18 @@
 /**
- *   File Name: NumberNotInRangeException.java<br>
+ *   File Name: InvalidExcelExtensionException.java<br>
  *
  *   Umanska, Olena<br>
  *   Java Boot Camp Exercise<br>
  *   Instructor: Jean-francois Nepton<br>
- *   Created: Jan 19, 2017
+ *   Created: Feb 9, 2017
  *   
  */
 
-package com.sqa.ou.helpers;
+package com.sqa.ou.helpers.exceptions;
 
 
 /**
- * NumberNotInRangeException //ADDD (description of class)
+ * InvalidExcelExtensionException //ADDD (description of class)
  * <p>
  * //ADDD (description of core fields)
  * <p>
@@ -23,5 +23,5 @@ package com.sqa.ou.helpers;
  * @since       1.0
  *
  */
-public class NumberNotInRangeException extends Exception {
+public class InvalidExcelExtensionException extends Exception {
 }
